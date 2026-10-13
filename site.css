@@ -11,7 +11,10 @@ h1,h2,h3{margin:0;font-weight:800;letter-spacing:-0.03em;line-height:1.02;text-w
 p{margin:0}
 
 /* top bar */
-.top{background:var(--brand);color:#fff}
+.top-sentinel{position:absolute;top:0;height:1px;width:1px}
+.top{background:var(--brand);color:#fff;position:sticky;top:0;z-index:20;transition:box-shadow .3s ease}
+.top.scrolled{box-shadow:0 10px 30px rgba(5,20,45,.35)}
+section[id],footer[id]{scroll-margin-top:84px}
 .top .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:76px}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:#fff;font-size:28px;font-weight:800;letter-spacing:-0.02em}
 .brand:hover{color:#fff}
@@ -79,10 +82,6 @@ p{margin:0}
 /* price + languages */
 .price{background:var(--brand);color:#fff;padding:88px 0}
 .price .wrap{display:flex;flex-direction:column;gap:40px}
-.price .head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:30px}
-.price .amount{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
-.price .amount strong{font-size:clamp(56px,8vw,96px);line-height:1;font-weight:800;letter-spacing:-0.04em}
-.price .amount span{font-size:22px;color:var(--sky)}
 .price p{font-size:24px;line-height:1.45;color:var(--sky);max-width:760px}
 .flags{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;list-style:none;margin:0;padding:0}
 .flags a{display:flex;align-items:center;gap:12px;min-height:60px;padding:0 18px;border-radius:999px;background:rgba(255,255,255,.12);border:2px solid rgba(255,255,255,.35);color:#fff;text-decoration:none;font-size:20px;font-weight:700}
@@ -107,16 +106,39 @@ p{margin:0}
 .foot .note{color:#B9C7DA}
 .foot .legal{font-size:17px;line-height:1.5;color:#B9C7DA;max-width:900px;border-top:1px solid rgba(255,255,255,.2);padding-top:22px}
 
-/* motion */
+/* motion: reveals on entry, scroll-driven where the browser can */
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
 .reveal.in{opacity:1;transform:none}
+.js .chips.reveal .chip,.js .flags.reveal li{opacity:0;translate:0 16px;transition:opacity .6s cubic-bezier(.16,1,.3,1),translate .6s cubic-bezier(.16,1,.3,1)}
+.js .chips.in .chip,.js .flags.in li{opacity:1;translate:0 0}
+.chips .chip:nth-child(2),.flags li:nth-child(2){transition-delay:.07s}.chips .chip:nth-child(3),.flags li:nth-child(3){transition-delay:.14s}.chips .chip:nth-child(4),.flags li:nth-child(4){transition-delay:.21s}.chips .chip:nth-child(5),.flags li:nth-child(5){transition-delay:.28s}
+.flags li:nth-child(6){transition-delay:.35s}.flags li:nth-child(7){transition-delay:.42s}.flags li:nth-child(8){transition-delay:.49s}.flags li:nth-child(9){transition-delay:.56s}.flags li:nth-child(10){transition-delay:.63s}
 .hero .copy>*{animation:rise .8s cubic-bezier(.16,1,.3,1) both}
 .hero .copy>*:nth-child(2){animation-delay:.08s}.hero .copy>*:nth-child(3){animation-delay:.16s}
 .hero .art>*{animation:fade 1s cubic-bezier(.16,1,.3,1) .2s both}
+.hero .chip{animation:fade 1s cubic-bezier(.16,1,.3,1) .2s both,ring .9s ease-in-out 1.3s 2}
+.brand .logo{transform-origin:50% 12%}
+.brand:hover .logo{animation:ring .9s ease-in-out}
 @keyframes rise{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
 @keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes ring{0%,100%{rotate:0deg}15%{rotate:-7deg}30%{rotate:6deg}45%{rotate:-5deg}60%{rotate:4deg}75%{rotate:-2deg}}
 html:not(.js) .reveal{opacity:1;transform:none}
-@media (prefers-reduced-motion:reduce){.reveal,.hero .copy>*,.hero .art>*{animation:none;opacity:1;transition:none}.reveal,.hero .copy>*{transform:none}.tile:hover .frame{transform:none}}
+@supports (animation-timeline: view()){
+  .tile .frame{animation:tile-rise linear both;animation-timeline:view();animation-range:entry 5% entry 60%}
+  @keyframes tile-rise{from{translate:0 140px;opacity:.2}to{translate:0 0;opacity:1}}
+  .rel .frame{animation:slide-in linear both;animation-timeline:view();animation-range:entry 0% entry 55%}
+  @keyframes slide-in{from{translate:120px 0;rotate:14deg;opacity:0}to{translate:0 0;rotate:0deg;opacity:1}}
+  .blister .pill{animation:pill-take linear both;animation-timeline:scroll(root)}
+  @keyframes pill-take{0%{opacity:1;translate:0 0}60%{opacity:1;translate:0 -4px}100%{opacity:0;translate:0 -18px}}
+  .blister{animation:blister-drift linear both;animation-timeline:scroll(root);animation-range:0px 800px}
+  @keyframes blister-drift{from{translate:0 0}to{translate:0 -120px}}
+}
+@media (prefers-reduced-motion:reduce){
+  .reveal,.hero .copy>*,.hero .art>*,.hero .chip,.brand:hover .logo,.tile .frame,.rel .frame,.blister,.blister .pill{animation:none;opacity:1;transition:none}
+  .reveal,.hero .copy>*{transform:none}
+  .js .chips.reveal .chip,.js .flags.reveal li{opacity:1;translate:0 0;transition:none}
+  .tile:hover .frame{transform:none}
+}
 
 /* guide + privacy pages */
 .doc{max-width:860px;margin:0 auto;padding:28px 24px 64px;font-size:19px}
