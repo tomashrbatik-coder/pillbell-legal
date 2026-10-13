@@ -109,10 +109,10 @@ section[id],footer[id]{scroll-margin-top:84px}
 /* motion: reveals on entry, scroll-driven where the browser can */
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
 .reveal.in{opacity:1;transform:none}
-.js .chips.reveal .chip,.js .flags.reveal li{opacity:0;translate:0 16px;transition:opacity .6s cubic-bezier(.16,1,.3,1),translate .6s cubic-bezier(.16,1,.3,1)}
+.js .chips.reveal .chip,.js .flags.reveal li{opacity:0;translate:0 16px;transition:opacity .6s cubic-bezier(.16,1,.3,1),translate .6s cubic-bezier(.16,1,.3,1);transition-delay:var(--d,0s)}
 .js .chips.in .chip,.js .flags.in li{opacity:1;translate:0 0}
-.chips .chip:nth-child(2),.flags li:nth-child(2){transition-delay:.07s}.chips .chip:nth-child(3),.flags li:nth-child(3){transition-delay:.14s}.chips .chip:nth-child(4),.flags li:nth-child(4){transition-delay:.21s}.chips .chip:nth-child(5),.flags li:nth-child(5){transition-delay:.28s}
-.flags li:nth-child(6){transition-delay:.35s}.flags li:nth-child(7){transition-delay:.42s}.flags li:nth-child(8){transition-delay:.49s}.flags li:nth-child(9){transition-delay:.56s}.flags li:nth-child(10){transition-delay:.63s}
+.chips .chip:nth-child(2),.flags li:nth-child(2){--d:.07s}.chips .chip:nth-child(3),.flags li:nth-child(3){--d:.14s}.chips .chip:nth-child(4),.flags li:nth-child(4){--d:.21s}.chips .chip:nth-child(5),.flags li:nth-child(5){--d:.28s}
+.flags li:nth-child(6){--d:.35s}.flags li:nth-child(7){--d:.42s}.flags li:nth-child(8){--d:.49s}.flags li:nth-child(9){--d:.56s}.flags li:nth-child(10){--d:.63s}
 .hero .copy>*{animation:rise .8s cubic-bezier(.16,1,.3,1) both}
 .hero .copy>*:nth-child(2){animation-delay:.08s}.hero .copy>*:nth-child(3){animation-delay:.16s}
 .hero .art>*{animation:fade 1s cubic-bezier(.16,1,.3,1) .2s both}
@@ -130,7 +130,7 @@ html:not(.js) .reveal{opacity:1;transform:none}
   @keyframes slide-in{from{translate:120px 0;rotate:14deg;opacity:0}to{translate:0 0;rotate:0deg;opacity:1}}
   .blister .pill{animation:pill-take linear both;animation-timeline:scroll(root)}
   @keyframes pill-take{0%{opacity:1;translate:0 0}60%{opacity:1;translate:0 -4px}100%{opacity:0;translate:0 -18px}}
-  .blister{animation:blister-drift linear both;animation-timeline:scroll(root);animation-range:0px 800px}
+  .hero .art .blister{animation:fade 1s cubic-bezier(.16,1,.3,1) .2s both,blister-drift linear both;animation-timeline:auto,scroll(root);animation-range:normal,0px 800px}
   @keyframes blister-drift{from{translate:0 0}to{translate:0 -120px}}
 }
 @media (prefers-reduced-motion:reduce){
